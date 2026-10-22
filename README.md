@@ -18,12 +18,12 @@ You choose the original language (or auto-detect), the language to translate to 
 
 ```powershell
 cd C:\Claude\PRJ\AudioToText
-py -3.11 -m venv .venv
+py -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-The first run downloads the Whisper model (`small` is about 500 MB).
+Python 3.10 or newer works (tested install on 3.14). ffmpeg must be on PATH for decoding audio. The first run downloads the Whisper model (`small` is about 500 MB).
 
 ### Translation with Ollama
 
