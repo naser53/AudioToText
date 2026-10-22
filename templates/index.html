@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AudioToText</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main>
+  <h1>AudioToText</h1>
+  <p class="sub">Transcribe audio, translate it, and download text, subtitles or meeting notes. Everything runs on this computer.</p>
+
+  <form id="form">
+    <label>Audio or video file
+      <input type="file" name="audio" accept="audio/*,video/*" required>
+    </label>
+
+    <div class="row">
+      <label>Original language
+        <select name="source">
+          <option value="">Auto-detect</option>
+          {% for code, name in languages.items() %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Translate to
+        <select name="target">
+          <option value="">No translation</option>
+          {% for code, name in languages.items() %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+
+    <fieldset>
+      <legend>Output format</legend>
+      {% for key, (label, ext, _) in formats.items() %}
+      <label class="radio"><input type="radio" name="format" value="{{ key }}" {% if loop.first %}checked{% endif %}> {{ label }}</label>
+      {% endfor %}
+    </fieldset>
+
+    <details>
+      <summary>Advanced</summary>
+      <label>Whisper model (bigger is more accurate but slower)
+        <select name="model">
+          {% for m in model_sizes %}<option value="{{ m }}" {% if m == default_model %}selected{% endif %}>{{ m }}</option>{% endfor %}
+        </select>
+      </label>
+    </details>
+
+    <ul class="notes">
+      {% if not ollama_ready %}<li>Ollama is not reachable, so translation will fail. Start Ollama or set OLLAMA_HOST.</li>{% endif %}
+      {% if not speakers_ready %}<li>Speaker detection is off (no HF_TOKEN or pyannote). Meeting format will label everyone "Speaker 1".</li>{% endif %}
+    </ul>
+
+    <button type="submit">Start</button>
+  </form>
+
+  <section id="status" hidden>
+    <p id="stage"></p>
+    <progress id="bar" max="100" value="0"></progress>
+    <p id="error" class="error" hidden></p>
+    <div id="result" hidden>
+      <a id="download" class="button" href="#">Download</a>
+      <pre id="preview"></pre>
+    </div>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

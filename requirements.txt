@@ -1,0 +1,4 @@
+faster-whisper>=1.0
+flask>=3.0
+# Optional, for speaker names in Meeting format (needs a free HF_TOKEN):
+# pyannote.audio>=3.1
