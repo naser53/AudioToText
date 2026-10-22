@@ -53,7 +53,12 @@ Without it, Meeting format labels everyone "Speaker 1".
 
 ## Run
 
+Double-click `run.bat`. It creates `.venv` and installs the requirements if needed, then opens the app in your browser.
+
+Or by hand, always from inside the virtual environment:
+
 ```powershell
+.venv\Scripts\activate
 python app.py
 ```
 

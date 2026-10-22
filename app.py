@@ -5,6 +5,14 @@ import traceback
 import uuid
 from pathlib import Path
 
+import importlib.util
+import sys
+
+if importlib.util.find_spec("faster_whisper") is None:
+    sys.exit("faster-whisper is not installed for this Python:\n  " + sys.executable +
+             "\nStart the app with run.bat, or activate .venv first "
+             "(.venv\\Scripts\\activate) and run: pip install -r requirements.txt")
+
 from flask import Flask, abort, jsonify, render_template, request, send_file
 from werkzeug.utils import secure_filename
 
